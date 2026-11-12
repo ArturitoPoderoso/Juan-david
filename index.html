@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sol del Norte • Sistema Gastronómico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       BARRA SUPERIOR (HEADER)
+       ======================================================================== -->
+  <header class="header-bar">
+    <div class="brand-section">
+      <div class="brand-icon">SN</div>
+      <div>
+        <h1 class="brand-title">Sol del Norte</h1>
+        <span class="brand-subtitle">Cevichería & Cocina Marina Tradicional</span>
+      </div>
+    </div>
+
+    <!-- Navegación de Roles Operativos -->
+    <nav class="role-tabs" aria-label="Navegación de Roles">
+      <button type="button" class="role-tab active" data-role="waitress">
+        <span>Salón (Mesera)</span>
+      </button>
+      <button type="button" class="role-tab" data-role="kitchen">
+        <span>Cocina KDS</span>
+        <span class="role-badge" id="kitchenBadgeCounter" style="display: none;">0</span>
+      </button>
+      <button type="button" class="role-tab" data-role="cashier">
+        <span>Caja & Cobro</span>
+      </button>
+      <button type="button" class="role-tab" data-role="admin">
+        <span>Administración</span>
+      </button>
+    </nav>
+
+    <!-- Estado y reloj en vivo -->
+    <div class="header-status">
+      <div class="sync-status">
+        <span class="status-dot"></span>
+        <span>Red Local Sincronizada</span>
+      </div>
+      <div class="live-clock" id="liveClock">--:--:--</div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       CONTENEDOR DE VISTAS PRINCIPALES
+       ======================================================================== -->
+  <main class="main-content">
+
+    <!-- ----------------------------------------------------------------------
+         VISTA 1: SALÓN Y COMANDAS (MESERA) - CUS-01-01
+         ---------------------------------------------------------------------- -->
+    <section id="panel-waitress" class="view-panel active">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Atención en Salón y Comandas</h2>
+          <p class="section-desc">Seleccione una mesa del plano o modalidad para llevar, añada platos y envíe la orden estructurada.</p>
+        </div>
+      </div>
+
+      <div class="order-layout">
+        <!-- Columna Izquierda: Plano de Mesas y Menú -->
+        <div>
+          <!-- Selector de Canal y Plano de Mesas -->
+          <div class="channel-selector-card">
+            <div class="channel-buttons">
+              <button type="button" class="btn-channel active" id="btnChannelSalon">Mesas en Salón</button>
+              <button type="button" class="btn-channel" id="btnChannelTakeout">Para Llevar / Recojo</button>
+            </div>
+
+            <div id="tablesContainer">
+              <!-- Filtro de Zonas de Mesas -->
+              <div class="table-zone-filters" id="tableZoneFilters">
+                <button type="button" class="zone-btn active" data-zone="ALL">Todas las Áreas</button>
+                <button type="button" class="zone-btn" data-zone="MAIN">Salón Principal</button>
+                <button type="button" class="zone-btn" data-zone="TERRACE">Terraza Marina</button>
+                <button type="button" class="zone-btn" data-zone="BAR">Barra</button>
+              </div>
+
+              <!-- Plano Interactivo de Mesas -->
+              <div class="tables-interactive-grid" id="tablesGrid">
+                <!-- Se llena dinámicamente con estado de ocupación, total y plato listo -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Buscador y Filtro de Categorías -->
+          <div class="catalog-filter-bar">
+            <div class="search-input-wrapper">
+              <input type="text" id="menuSearchInput" class="menu-search-input" placeholder="🔍 Buscar plato (ej. ceviche, arroz, parihuela)...">
+            </div>
+
+            <div class="category-pills">
+              <button type="button" class="cat-pill active" data-cat="Todos">Todos los Platos</button>
+              <button type="button" class="cat-pill" data-cat="Ceviches">Ceviches & Tiraditos</button>
+              <button type="button" class="cat-pill" data-cat="Calientes">Platos Calientes</button>
+              <button type="button" class="cat-pill" data-cat="Entradas">Entradas & Causas</button>
+              <button type="button" class="cat-pill" data-cat="Bebidas">Bebidas & Cervezas</button>
+            </div>
+          </div>
+
+          <!-- Cuadrícula de Platos -->
+          <div class="menu-grid" id="menuGrid">
+            <!-- Se llena dinámicamente -->
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Sidebar de Comanda Actual -->
+        <aside class="order-sidebar">
+          <div class="order-sidebar-header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--color-text-muted);">Comanda Activa</span>
+              <span class="current-dest-badge" id="currentDestBadge">Salón: Mesa 1</span>
+            </div>
+          </div>
+
+          <!-- Lista de ítems en carrito -->
+          <div class="order-items-list" id="orderItemsList">
+            <div class="empty-order-hint">
+              Seleccione platos del catálogo a la izquierda para armar la comanda.
+            </div>
+          </div>
+
+          <!-- Total de la comanda -->
+          <div class="order-total-block">
+            <span class="order-total-label">Subtotal estimado</span>
+            <span class="order-total-val" id="orderTotalVal">S/ 0.00</span>
+          </div>
+
+          <!-- Botón Confirmar Comanda -->
+          <button type="button" class="btn-confirm-order" id="btnConfirmOrder" disabled>
+            Confirmar y Enviar a Cocina
+          </button>
+
+          <!-- Monitor de Comandas de la Mesera -->
+          <div style="margin-top: 1.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem;">
+            <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 0.5rem;">
+              Seguimiento de Comandas en Vivo
+            </div>
+            <div id="waitressActiveOrdersList">
+              <!-- Se actualiza con el estado en vivo de las órdenes -->
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         VISTA 2: COCINA (KDS FIFO) & CATÁLOGO (CUS-01-02 & CUS-01-03)
+         ---------------------------------------------------------------------- -->
+    <section id="panel-kitchen" class="view-panel">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Pantalla de Cocina (KDS)</h2>
+          <p class="section-desc">Cola cronológica estricta (FIFO) y control rápido de platos agotados.</p>
+        </div>
+
+        <!-- Selector de Estación de Cocina -->
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 0.8rem; font-weight: 600; color: var(--color-text-muted);">Estación:</span>
+          <select id="kitchenStationFilter" class="station-select">
+            <option value="ALL">Todas las Estaciones</option>
+            <option value="COLD">Estación Fría (Ceviches/Causas)</option>
+            <option value="HOT">Estación Caliente (Salteados/Sopas)</option>
+            <option value="BAR">Barra & Bebidas</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Subnavegación de Cocina -->
+      <div class="kitchen-subnav">
+        <button type="button" class="subnav-btn active" id="btnKitchenQueueTab">Cola de Preparación (FIFO)</button>
+        <button type="button" class="subnav-btn" id="btnKitchenCatalogTab">Disponibilidad de Catálogo (Stock)</button>
+      </div>
+
+      <!-- Subvista A: Cola KDS FIFO -->
+      <div id="kitchenQueueView">
+        <div class="kds-queue-grid" id="kdsQueueGrid">
+          <!-- Tarjetas de órdenes en estricto orden cronológico -->
+        </div>
+      </div>
+
+      <!-- Subvista B: Control de Catálogo / Stock (CUS-01-02) -->
+      <div id="kitchenCatalogView" style="display: none;">
+        <div class="catalog-table-card">
+          <div style="margin-bottom: 0.75rem;">
+            <p style="font-size: 0.85rem; color: var(--color-text-muted);">
+              Marque un plato como <strong>Agotado</strong> para bloquear de inmediato nuevas confirmaciones en el salón (SLA &lt; 5 seg).
+            </p>
+          </div>
+          <table class="catalog-table">
+            <thead>
+              <tr>
+                <th>Plato / Descripción</th>
+                <th>Estación</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th style="width: 160px;">Estado en Salón</th>
+              </tr>
+            </thead>
+            <tbody id="kitchenCatalogTbody">
+              <!-- Se llena dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         VISTA 3: CAJA Y COBRO (CUS-01-04)
+         ---------------------------------------------------------------------- -->
+    <section id="panel-cashier" class="view-panel">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Gestión de Pre-cuenta y Cobro</h2>
+          <p class="section-desc">Liquidación consolidada por mesa o número de recojo y registro de medios de pago.</p>
+        </div>
+      </div>
+
+      <div class="checkout-layout">
+        <!-- Lista de Cuentas Pendientes -->
+        <div class="pending-bills-card">
+          <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--color-text-muted);">
+            Cuentas Pendientes de Cobro
+          </div>
+          <div class="pending-bills-list" id="pendingBillsList">
+            <!-- Botones de mesas o recojos con comanda -->
+          </div>
+        </div>
+
+        <!-- Detalle de la Pre-cuenta y Pago -->
+        <div class="billing-detail-card">
+          <div id="billingEmptyPanel" style="text-align: center; padding: 4rem 1rem; color: var(--color-text-subtle);">
+            Seleccione una mesa o comanda en la columna izquierda para revisar su pre-cuenta.
+          </div>
+
+          <div id="billingDetailPanel" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+              <div>
+                <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--color-marine-navy);" id="preaccountTargetTitle">Mesa 1</h3>
+                <span style="font-size: 0.8rem; color: var(--color-text-muted);" id="preaccountOrdersCodes">Comandas: COM-101</span>
+              </div>
+              <button type="button" class="btn-secondary" id="btnPrintPreaccount">
+                🖨 Imprimir Pre-cuenta
+              </button>
+            </div>
+
+            <!-- Hoja de Pre-cuenta -->
+            <div class="preaccount-sheet">
+              <div class="sheet-title">PRE-CUENTA DE CONSUMO</div>
+              <table class="sheet-table">
+                <thead>
+                  <tr>
+                    <th style="width: 35px;">Cant</th>
+                    <th>Detalle</th>
+                    <th style="text-align: right; width: 85px;">P. Unit</th>
+                    <th style="text-align: right; width: 85px;">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody id="preaccountTableBody">
+                  <!-- Ítems consolidados -->
+                </tbody>
+              </table>
+              <div class="sheet-total-row">
+                <span>TOTAL A COBRAR: </span>
+                <span id="preaccountTotalVal" style="color: var(--color-marine-navy);">S/ 0.00</span>
+              </div>
+            </div>
+
+            <!-- Formulario de Cobro -->
+            <div style="border-top: 1px solid var(--color-border); padding-top: 1.25rem;">
+              <label class="form-label">SELECCIONE MÉTODO DE PAGO:</label>
+              <div class="payment-methods-grid">
+                <div class="payment-method-card selected" data-method="Efectivo">
+                  <div style="font-size: 1.15rem;">💵</div>
+                  <div style="font-size: 0.85rem; font-weight: 700;">Efectivo</div>
+                </div>
+                <div class="payment-method-card" data-method="Yape">
+                  <div style="font-size: 1.15rem; color: #7209B7; font-weight: 800;">Y</div>
+                  <div style="font-size: 0.85rem; font-weight: 700;">Yape</div>
+                </div>
+                <div class="payment-method-card" data-method="Plin">
+                  <div style="font-size: 1.15rem; color: #00B4D8; font-weight: 800;">P</div>
+                  <div style="font-size: 0.85rem; font-weight: 700;">Plin</div>
+                </div>
+              </div>
+
+              <!-- Referencia Yape / Plin -->
+              <div class="payment-form-row" id="yapePlinReferenceRow" style="display: none;">
+                <label class="form-label" for="inputPaymentReference">CÓDIGO DE OPERACIÓN / REFERENCIA DIGITAL (OBLIGATORIO):</label>
+                <input type="text" class="form-input" id="inputPaymentReference" placeholder="Ej. 849204 o número de teléfono del cliente">
+              </div>
+
+              <!-- Cálculo de efectivo y vuelto -->
+              <div class="payment-form-row" id="cashGivenRow">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                  <div>
+                    <label class="form-label" for="inputCashGiven">EFECTIVO RECIBIDO (S/):</label>
+                    <input type="number" step="0.50" class="form-input" id="inputCashGiven" value="0.00">
+                  </div>
+                  <div>
+                    <label class="form-label">VUELTO CALCULADO:</label>
+                    <div style="font-size: 1.2rem; font-weight: 800; color: var(--color-marine-navy); padding-top: 6px;" id="cashChangeValue">
+                      S/ 0.00
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button type="button" class="btn-confirm-payment" id="btnConfirmPayment">
+                Confirmar Cobro de <span id="checkoutTotalToPay">S/ 0.00</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         VISTA 4: ADMINISTRACIÓN & CUADRE DE CAJA (CUS-01-05)
+         ---------------------------------------------------------------------- -->
+    <section id="panel-admin" class="view-panel">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Control Financiero y Cierre de Jornada</h2>
+          <p class="section-desc">Balance de ventas desagregado y verificación de efectivo según la fórmula operativa.</p>
+        </div>
+      </div>
+
+      <!-- Métricas en vivo -->
+      <div class="admin-metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">Ventas Totales del Día</div>
+          <div class="metric-value" id="metricTotalSales">S/ 0.00</div>
+          <div class="metric-sub">Todos los medios de pago</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Cobros en Efectivo</div>
+          <div class="metric-value" id="metricCashSales">S/ 0.00</div>
+          <div class="metric-sub">Ingresados en cajón físico</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Cobros Digitales (Yape + Plin)</div>
+          <div class="metric-value" id="metricDigitalSales">S/ 0.00</div>
+          <div class="metric-sub">Conciliados en cuenta bancaria</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Salidas / Gastos Menores</div>
+          <div class="metric-value" style="color: var(--color-terracotta);" id="metricExpenses">S/ 0.00</div>
+          <div class="metric-sub">Egresos registrados de caja</div>
+        </div>
+      </div>
+
+      <div class="cash-operations-layout">
+        <!-- Columna 1: Fondo y Salidas -->
+        <div>
+          <!-- Fondo Inicial de Caja -->
+          <div class="cash-box-card" style="margin-bottom: 1.25rem;">
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--color-marine-navy); margin-bottom: 0.4rem;">
+              Fondo Inicial de Apertura
+            </h3>
+            <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 0.75rem;">
+              Monto en sencillo con el que abrió el cajero la jornada de hoy.
+            </p>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="number" step="10.00" class="form-input" id="inputInitialCash" value="200.00" style="max-width: 140px;">
+              <button type="button" class="btn-secondary" id="btnSaveInitialCash">Fijar Fondo</button>
+            </div>
+          </div>
+
+          <!-- Registrar Salida / Gasto menor -->
+          <div class="cash-box-card">
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--color-marine-navy); margin-bottom: 0.4rem;">
+              Registrar Salida de Caja Chica
+            </h3>
+            <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 0.75rem;">
+              <input type="text" class="form-input" id="inputExpenseReason" placeholder="Motivo: ej. Compra de limones de urgencia">
+              <input type="number" step="1.00" class="form-input" id="inputExpenseAmount" placeholder="Monto en soles (S/)">
+              <button type="button" class="btn-secondary" id="btnAddExpense">+ Registrar Salida</button>
+            </div>
+
+            <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--color-text-muted); margin-top: 1rem; margin-bottom: 0.4rem;">
+              Salidas Registradas Hoy:
+            </div>
+            <div id="adminExpensesList">
+              <!-- Lista de salidas -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna 2: Cuadre de Caja con Fórmula -->
+        <div class="cash-box-card">
+          <h3 style="font-size: 1rem; font-weight: 800; color: var(--color-marine-navy); margin-bottom: 0.5rem;">
+            Cuadre de Efectivo Diario (CUS-01-05)
+          </h3>
+
+          <!-- Desglose oficial de ventas por medio -->
+          <div style="background-color: var(--color-surface-soft); border-radius: var(--radius-sm); padding: 0.75rem; margin-bottom: 1rem; font-size: 0.85rem;">
+            <div style="display: flex; justify-content: space-between; padding: 2px 0;">
+              <span>Cobros Efectivo:</span>
+              <strong id="summarySalesCash">S/ 0.00</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 2px 0;">
+              <span>Cobros Yape:</span>
+              <strong id="summarySalesYape">S/ 0.00</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 2px 0;">
+              <span>Cobros Plin:</span>
+              <strong id="summarySalesPlin">S/ 0.00</strong>
+            </div>
+            <div style="border-top: 1px dashed var(--color-border); margin-top: 4px; padding-top: 4px; display: flex; justify-content: space-between; font-weight: 700;">
+              <span>Total Ventas:</span>
+              <span id="summarySalesTotal">S/ 0.00</span>
+            </div>
+          </div>
+
+          <!-- Fórmula de Efectivo Esperado -->
+          <div class="formula-box">
+            <div>Fórmula Operativa:</div>
+            <div class="formula-text">(Fondo Inicial + Cobros en Efectivo) - Salidas Registradas</div>
+            <div style="margin-top: 4px; font-size: 0.75rem; color: var(--color-text-muted);" id="formulaBreakdown">
+              (S/ 200.00 + S/ 0.00) - S/ 0.00
+            </div>
+            <div style="margin-top: 6px; font-weight: 800; font-size: 0.95rem;">
+              Efectivo Esperado en Caja: <span id="formulaExpectedResult">S/ 200.00</span>
+            </div>
+          </div>
+
+          <!-- Entrada de efectivo físico -->
+          <div style="margin-top: 1rem;">
+            <label class="form-label" for="inputCountedCash">EFECTIVO FÍSICO CONTADO EN CAJA (S/):</label>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="number" step="0.50" class="form-input" id="inputCountedCash" placeholder="Ingrese el arqueo físico contado">
+              <button type="button" class="btn-primary" id="btnRunReconciliation">Ejecutar Cuadre</button>
+            </div>
+          </div>
+
+          <!-- Resultado del Cuadre -->
+          <div id="reconciliationResultBox" class="difference-result-box" style="display: none;">
+            <div style="font-weight: 700; font-size: 0.95rem;" id="reconciliationResultTitle">CUADRE EXACTO</div>
+            <div class="diff-amount" id="reconciliationResultAmount">Diferencia: S/ 0.00</div>
+            <div style="font-size: 0.8rem; margin-top: 4px;" id="reconciliationResultDetail">El balance coincide al 100%.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Ticket oculto para impresión en papel térmico -->
+  <div id="printOnlyTicket" class="print-only"></div>
+
+  <!-- Contenedor para Notificaciones Toast -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Script Principal con ES Modules -->
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

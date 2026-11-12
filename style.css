@@ -1,0 +1,1390 @@
+/* ==========================================================================
+   SOL DEL NORTE - SISTEMA GASTRONÓMICO MODULAR
+   Estética Minimalista, Cálida, Marina & Tradicional (Cero clichés de IA / Cero Neón)
+   ========================================================================== */
+
+:root {
+  /* Paleta Costera Marina & Caleta Norteña */
+  --color-bg: #F8F9FA;
+  --color-surface: #FFFFFF;
+  --color-surface-soft: #F1F4F7;
+  --color-surface-hover: #E9ECEF;
+  
+  --color-text-main: #1C2730;
+  --color-text-muted: #5E6E7D;
+  --color-text-subtle: #8A9BA8;
+  
+  --color-marine-navy: #0E2A3A;
+  --color-marine-blue: #1D4B66;
+  --color-marine-light: #EBF3F8;
+  
+  --color-terracotta: #D35400; /* Tono cálido gastronómico */
+  --color-terracotta-soft: #FBEEE6;
+  
+  --color-border: #E2E8F0;
+  --color-border-subtle: #EDF2F7;
+  
+  /* Estados Operativos Sobrios */
+  --status-pending-bg: #FEF9C3;
+  --status-pending-text: #854D0E;
+  --status-pending-border: #FACC15;
+  
+  --status-prep-bg: #E0F2FE;
+  --status-prep-text: #0369A1;
+  --status-prep-border: #38BDF8;
+  
+  --status-ready-bg: #DCFCE7;
+  --status-ready-text: #15803D;
+  --status-ready-border: #4ADE80;
+  
+  --status-out-bg: #FEE2E2;
+  --status-out-text: #B91C1C;
+
+  /* Sombras naturales y sutiles */
+  --shadow-sm: 0 1px 2px rgba(14, 42, 58, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(14, 42, 58, 0.05), 0 2px 4px -2px rgba(14, 42, 58, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(14, 42, 58, 0.06), 0 4px 6px -4px rgba(14, 42, 58, 0.03);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   BARRA SUPERIOR (HEADER)
+   ========================================================================== */
+.header-bar {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.75rem 1.75rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.brand-icon {
+  width: 38px;
+  height: 38px;
+  background-color: var(--color-marine-navy);
+  color: #FFF;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.04em;
+}
+
+.brand-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-marine-navy);
+  letter-spacing: -0.02em;
+}
+
+.brand-subtitle {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  display: block;
+}
+
+/* Pestañas de Roles */
+.role-tabs {
+  display: flex;
+  background-color: var(--color-surface-soft);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  gap: 4px;
+}
+
+.role-tab {
+  background: transparent;
+  border: none;
+  font-family: var(--font-family);
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all 0.15s ease-in-out;
+}
+
+.role-tab:hover {
+  color: var(--color-marine-navy);
+}
+
+.role-tab.active {
+  background-color: var(--color-surface);
+  color: var(--color-marine-navy);
+  box-shadow: var(--shadow-sm);
+}
+
+.role-badge {
+  background-color: var(--color-terracotta);
+  color: #FFF;
+  font-size: 0.7rem;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.live-clock {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--color-marine-navy);
+}
+
+.sync-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10B981;
+}
+
+/* ==========================================================================
+   TOASTS LIMPIOS
+   ========================================================================== */
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.toast {
+  background-color: var(--color-marine-navy);
+  color: #FFF;
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  animation: slideIn 0.2s ease-out;
+  max-width: 400px;
+}
+
+.toast.warning {
+  background-color: #854D0E;
+}
+
+.toast.success {
+  background-color: #14532D;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ==========================================================================
+   ESTRUCTURA GENERAL
+   ========================================================================== */
+.main-content {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.view-panel {
+  display: none;
+}
+
+.view-panel.active {
+  display: block;
+}
+
+.section-header {
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.85rem;
+  gap: 1rem;
+}
+
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--color-marine-navy);
+  letter-spacing: -0.02em;
+}
+
+.section-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   VISTA 1: SALÓN Y COMANDAS (MESERA)
+   ========================================================================== */
+.order-layout {
+  display: grid;
+  grid-template-columns: 1fr 390px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 1080px) {
+  .order-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.channel-selector-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.1rem;
+  margin-bottom: 1.25rem;
+}
+
+.channel-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.btn-channel {
+  flex: 1;
+  background-color: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.65rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.btn-channel.active {
+  background-color: var(--color-marine-navy);
+  color: #FFF;
+  border-color: var(--color-marine-navy);
+}
+
+/* Filtro de Zonas de Mesas */
+.table-zone-filters {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.zone-btn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-family: var(--font-family);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.zone-btn.active {
+  background-color: var(--color-marine-light);
+  border-color: var(--color-marine-blue);
+  color: var(--color-marine-navy);
+  font-weight: 700;
+}
+
+/* Plano Interactivo de Mesas */
+.tables-interactive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+  gap: 0.65rem;
+}
+
+.table-tile {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.5rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 76px;
+  position: relative;
+  transition: all 0.15s;
+}
+
+.table-tile:hover {
+  border-color: var(--color-marine-blue);
+}
+
+.table-tile.selected {
+  background-color: var(--color-marine-light);
+  border-color: var(--color-marine-blue);
+  outline: 2px solid var(--color-marine-navy);
+}
+
+.table-tile.occupied {
+  border-left: 3px solid var(--color-terracotta);
+}
+
+.table-tile.has-ready {
+  border-color: #10B981;
+  background-color: #F0FDF4;
+}
+
+.table-tile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.table-number {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-marine-navy);
+}
+
+.table-zone-tag {
+  font-size: 0.62rem;
+  color: var(--color-text-subtle);
+  font-weight: 500;
+}
+
+.table-tile-body {
+  margin-top: 4px;
+}
+
+.table-spent {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-marine-navy);
+}
+
+.table-time {
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+}
+
+.table-free {
+  font-size: 0.72rem;
+  color: var(--color-text-subtle);
+}
+
+.table-ready-bell {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #15803D;
+  margin-top: 2px;
+}
+
+/* Buscador y Filtros del Catálogo */
+.catalog-filter-bar {
+  margin-bottom: 1.1rem;
+}
+
+.search-input-wrapper {
+  margin-bottom: 0.75rem;
+}
+
+.menu-search-input {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 1rem;
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  background-color: var(--color-surface);
+  transition: border-color 0.15s;
+}
+
+.menu-search-input:focus {
+  outline: none;
+  border-color: var(--color-marine-navy);
+}
+
+.category-pills {
+  display: flex;
+  gap: 0.45rem;
+  overflow-x: auto;
+  padding-bottom: 0.4rem;
+}
+
+.cat-pill {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.4rem 0.95rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: var(--font-family);
+  transition: all 0.15s;
+}
+
+.cat-pill.active {
+  background-color: var(--color-marine-navy);
+  color: #FFF;
+  border-color: var(--color-marine-navy);
+}
+
+/* Platos del Menú */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 0.9rem;
+}
+
+.dish-item-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 125px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.dish-item-card:hover:not(.out-of-stock) {
+  border-color: var(--color-marine-blue);
+  box-shadow: var(--shadow-sm);
+}
+
+.dish-item-card.out-of-stock {
+  background-color: #FAFAFA;
+  opacity: 0.6;
+  border-style: dashed;
+}
+
+.dish-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.dish-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--color-marine-navy);
+}
+
+.dish-price {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--color-terracotta);
+  white-space: nowrap;
+}
+
+.dish-desc {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 0.3rem;
+  line-height: 1.35;
+}
+
+.dish-action-row {
+  margin-top: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.station-pill {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.station-pill.cold {
+  background-color: #E0F2FE;
+  color: #0369A1;
+}
+
+.station-pill.hot {
+  background-color: #FFEDD5;
+  color: #9A3412;
+}
+
+.station-pill.bar {
+  background-color: #F3E8FF;
+  color: #6B21A8;
+}
+
+.btn-add-dish {
+  background-color: var(--color-marine-light);
+  color: var(--color-marine-navy);
+  border: 1px solid #D2E3ED;
+  font-family: var(--font-family);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-add-dish:hover {
+  background-color: var(--color-marine-navy);
+  color: #FFF;
+  border-color: var(--color-marine-navy);
+}
+
+.badge-out {
+  font-size: 0.7rem;
+  background-color: var(--status-out-bg);
+  color: var(--status-out-text);
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+/* Sidebar de Comanda */
+.order-sidebar {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  position: sticky;
+  top: 4.8rem;
+}
+
+.order-sidebar-header {
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.current-dest-badge {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color-marine-light);
+  color: var(--color-marine-navy);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+}
+
+.order-items-list {
+  max-height: 330px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.empty-order-hint {
+  text-align: center;
+  padding: 2.5rem 0;
+  color: var(--color-text-subtle);
+  font-size: 0.85rem;
+}
+
+.cart-item-row {
+  border-bottom: 1px dashed var(--color-border-subtle);
+  padding-bottom: 0.6rem;
+}
+
+.cart-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-item-name {
+  font-size: 0.85rem;
+  color: var(--color-marine-navy);
+}
+
+.cart-item-unit {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.qty-pill-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.qty-btn {
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-soft);
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-value {
+  font-weight: 700;
+  font-size: 0.85rem;
+  min-width: 18px;
+  text-align: center;
+}
+
+.cart-note-input {
+  width: 100%;
+  margin-top: 5px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-family: var(--font-family);
+  background-color: #FAFAFA;
+}
+
+.cart-note-input:focus {
+  outline: none;
+  border-color: var(--color-marine-navy);
+  background-color: #FFF;
+}
+
+.order-total-block {
+  border-top: 1px solid var(--color-border);
+  padding-top: 0.85rem;
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.order-total-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.order-total-val {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--color-marine-navy);
+}
+
+.btn-confirm-order {
+  width: 100%;
+  margin-top: 1rem;
+  background-color: var(--color-marine-navy);
+  color: #FFF;
+  border: none;
+  font-family: var(--font-family);
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 0.85rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.btn-confirm-order:hover:not(:disabled) {
+  background-color: var(--color-marine-blue);
+}
+
+.btn-confirm-order:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.waiter-order-tracker {
+  padding: 0.45rem 0;
+  border-bottom: 1px dashed var(--color-border-subtle);
+  font-size: 0.8rem;
+}
+
+.status-tracker-badge {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.status-tracker-badge.status-pending {
+  background-color: var(--status-pending-bg);
+  color: var(--status-pending-text);
+}
+
+.status-tracker-badge.status-prep {
+  background-color: var(--status-prep-bg);
+  color: var(--status-prep-text);
+}
+
+.status-tracker-badge.status-ready {
+  background-color: var(--status-ready-bg);
+  color: var(--status-ready-text);
+}
+
+/* ==========================================================================
+   VISTA 2: COCINA (KDS) & CATÁLOGO
+   ========================================================================== */
+.station-select {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.75rem;
+  font-family: var(--font-family);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-marine-navy);
+  background-color: var(--color-surface);
+}
+
+.kitchen-subnav {
+  display: flex;
+  gap: 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 1.25rem;
+}
+
+.subnav-btn {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.5rem 0.25rem 0.75rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.subnav-btn.active {
+  color: var(--color-marine-navy);
+  border-bottom-color: var(--color-marine-navy);
+}
+
+/* KDS Cards */
+.kds-queue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.kds-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-top-width: 4px;
+}
+
+.status-pending-border {
+  border-top-color: var(--status-pending-border);
+}
+
+.status-prep-border {
+  border-top-color: var(--status-prep-border);
+}
+
+.status-ready-border {
+  border-top-color: var(--status-ready-border);
+  background-color: #FAFCFA;
+}
+
+.kds-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding-bottom: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+.kds-fifo-pos {
+  font-size: 0.75rem;
+  background-color: var(--color-surface-soft);
+  color: var(--color-marine-navy);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 800;
+}
+
+.kds-order-id {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-marine-navy);
+}
+
+.kds-target-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-marine-blue);
+  margin-top: 2px;
+}
+
+.kds-timer-pill {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background-color: var(--color-surface-soft);
+  color: var(--color-text-muted);
+}
+
+.kds-timer-pill.urgent {
+  background-color: var(--status-out-bg);
+  color: var(--status-out-text);
+  font-weight: 700;
+}
+
+.kds-card-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+
+.kds-item-row {
+  font-size: 0.86rem;
+}
+
+.kds-item-qty {
+  font-weight: 800;
+  color: var(--color-marine-navy);
+  display: inline-block;
+  min-width: 24px;
+}
+
+.kds-item-name {
+  font-weight: 600;
+}
+
+.kds-item-station-tag {
+  font-size: 0.62rem;
+  color: var(--color-text-subtle);
+  margin-left: 4px;
+  font-weight: 600;
+}
+
+.kds-item-note {
+  font-size: 0.75rem;
+  color: var(--color-terracotta);
+  margin-left: 24px;
+  font-weight: 500;
+  background-color: var(--color-terracotta-soft);
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 2px;
+}
+
+.kds-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--color-border-subtle);
+  padding-top: 0.75rem;
+  margin-top: auto;
+}
+
+.kds-status-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.kds-status-pill.pendiente {
+  background-color: var(--status-pending-bg);
+  color: var(--status-pending-text);
+}
+
+.kds-status-pill.en-preparación {
+  background-color: var(--status-prep-bg);
+  color: var(--status-prep-text);
+}
+
+.kds-status-pill.listo {
+  background-color: var(--status-ready-bg);
+  color: var(--status-ready-text);
+}
+
+.kds-actions-group {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.btn-kds {
+  font-family: var(--font-family);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.btn-kds.btn-prep {
+  background-color: #0284C7;
+  color: #FFF;
+}
+
+.btn-kds.btn-ready {
+  background-color: #16A34A;
+  color: #FFF;
+}
+
+.btn-kds.btn-ready-attempt {
+  background-color: #E2E8F0;
+  color: #475569;
+}
+
+/* Tabla Catálogo Cocina */
+.catalog-table-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
+.catalog-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.catalog-table th {
+  text-align: left;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.catalog-table td {
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.stock-toggle-btn {
+  font-family: var(--font-family);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.stock-toggle-btn.active {
+  background-color: var(--status-ready-bg);
+  color: var(--status-ready-text);
+  border-color: #A7F3D0;
+}
+
+.stock-toggle-btn.out {
+  background-color: var(--status-out-bg);
+  color: var(--status-out-text);
+  border-color: #FECACA;
+}
+
+/* ==========================================================================
+   VISTA 3: CAJA Y COBRO (CUS-01-04)
+   ========================================================================== */
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pending-bills-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.1rem;
+}
+
+.pending-bills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+
+.bill-item-btn {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.8rem;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-family);
+  transition: all 0.15s;
+}
+
+.bill-item-btn:hover {
+  border-color: var(--color-marine-blue);
+}
+
+.bill-item-btn.selected {
+  background-color: var(--color-marine-light);
+  border-color: var(--color-marine-navy);
+}
+
+.bill-item-title {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--color-marine-navy);
+}
+
+.bill-item-sub {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 3px;
+}
+
+.billing-detail-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+}
+
+.preaccount-sheet {
+  background-color: #FAFAFA;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 1.1rem;
+  margin-bottom: 1.25rem;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.sheet-title {
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-family);
+  color: var(--color-marine-navy);
+}
+
+.sheet-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+  margin: 0.75rem 0;
+}
+
+.sheet-table th {
+  border-bottom: 1px dashed #CCC;
+  text-align: left;
+  padding: 5px 0;
+}
+
+.sheet-table td {
+  padding: 5px 0;
+}
+
+.sheet-total-row {
+  border-top: 1px dashed #CCC;
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-align: right;
+  padding-top: 8px;
+  font-family: var(--font-family);
+}
+
+.payment-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.payment-method-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.payment-method-card.selected {
+  border-color: var(--color-marine-navy);
+  background-color: var(--color-marine-light);
+  font-weight: 700;
+}
+
+.payment-form-row {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-bottom: 5px;
+}
+
+.form-input {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-marine-navy);
+}
+
+.btn-confirm-payment {
+  background-color: #15803D;
+  color: #FFF;
+  border: none;
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.9rem 1.5rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.15s;
+}
+
+.btn-confirm-payment:hover {
+  background-color: #166534;
+}
+
+/* ==========================================================================
+   VISTA 4: ADMINISTRACIÓN & CUADRE (CUS-01-05)
+   ========================================================================== */
+.admin-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.metric-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.35rem;
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.metric-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-marine-navy);
+  margin-top: 4px;
+}
+
+.metric-sub {
+  font-size: 0.75rem;
+  color: var(--color-text-subtle);
+  margin-top: 2px;
+}
+
+.cash-operations-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .cash-operations-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cash-box-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.35rem;
+}
+
+.formula-box {
+  background-color: var(--color-marine-light);
+  border-left: 3px solid var(--color-marine-blue);
+  padding: 0.85rem 1.1rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.82rem;
+  margin-bottom: 1rem;
+  color: var(--color-marine-navy);
+}
+
+.formula-text {
+  font-family: monospace;
+  font-weight: 700;
+  margin-top: 3px;
+}
+
+.difference-result-box {
+  margin-top: 1rem;
+  padding: 1.1rem;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  border: 1px solid var(--color-border);
+}
+
+.difference-result-box.balanced {
+  background-color: var(--status-ready-bg);
+  border-color: #86EFAC;
+  color: var(--status-ready-text);
+}
+
+.difference-result-box.shortage {
+  background-color: var(--status-out-bg);
+  border-color: #FCA5A5;
+  color: var(--status-out-text);
+}
+
+.difference-result-box.surplus {
+  background-color: var(--status-prep-bg);
+  border-color: #93C5FD;
+  color: var(--status-prep-text);
+}
+
+.diff-amount {
+  font-size: 1.45rem;
+  font-weight: 800;
+  margin-top: 4px;
+}
+
+.btn-secondary {
+  background-color: var(--color-surface-soft);
+  color: var(--color-text-main);
+  border: 1px solid var(--color-border);
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.btn-primary {
+  background-color: var(--color-marine-navy);
+  color: #FFF;
+  border: none;
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.6rem 1.25rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-marine-blue);
+}
+
+/* Modales e impresiones limpias */
+.print-only {
+  display: none;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-only, .print-only * {
+    visibility: visible;
+  }
+  .print-only {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px;
+  }
+}
